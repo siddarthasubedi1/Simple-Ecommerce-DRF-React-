@@ -17,7 +17,8 @@ urlpatterns = [
     path("cart/add", views.add_to_cart, name="add-to-cart-no-slash"),
     path("cart/remove/", views.remove_from_cart, name="remove-from-cart"),
     path("cart/remove", views.remove_from_cart, name="remove-from-cart-no-slash"),   
-    
-    
-    path('cart/update/', views.update_from_cart, name='update-quantity')
+    path('cart/update/', views.update_from_cart, name='update-quantity'),
+    path('cart/update', views.update_from_cart, name='update-quantity-no-slash'),
+    path('orders/create/', views.create_cart, name='create-cart'),
+    path('orders/create', views.create_cart, name='create-cart-no-slash'),
 ]

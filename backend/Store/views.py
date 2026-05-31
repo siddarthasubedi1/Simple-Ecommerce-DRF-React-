@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
-from .models import Product, Category, Cart, CartItem
+from .models import Product, Category, Cart, CartItem, Order, OrderItem
 from .serializers import ProductSerializer, CategorySerializer, CartSerializer, CartItemSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -190,4 +190,41 @@ def remove_from_cart(request):
 
 
 
-    
+@api_view(["POST"])
+def create_cart(request):
+    try:
+        data = request.data
+        name = data.get("name")
+        address = data.get("address")
+        phone = data.get("phone")
+        payment_method = data.get("payment_method", 'COD')
+        
+        cart = Cart.objects.first()
+        if not cart or not cart.cart_items.exists():
+            return Response({"error": "Cart is empty"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        total = sum(float(item.product.price) * item.quantity for item in cart.cart_items.all())
+        
+        # createing order
+        order = Order.objects.create(
+            user=None,  # Replace with request.user if you have authentication
+            total_price=total,
+        )
+        
+        # createing order items
+        for item in cart.cart_items.all():
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                quantity=item.quantity,
+                price=item.product.price,
+                            )
+        
+        # Clear the cart after creating the order
+        cart.cart_items.all().delete()
+        
+        return Response({"message": "Order created successfully",
+                         "order_id": order.id
+                         }, status=status.HTTP_201_CREATED)      
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.Http_500_INTERNAL_SERVER_ERROR)

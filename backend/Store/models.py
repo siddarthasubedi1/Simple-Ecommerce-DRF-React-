@@ -25,13 +25,24 @@ class Product(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(User, related_name="orders", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="orders", on_delete=models.CASCADE, null=True, blank=True)
     products = models.ManyToManyField(Product, related_name="orders")
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Order {self.id} by {self.user.username}"
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name="order_items", on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name="order_items", on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.quantity} of {self.product.name} in Order {self.order.id}"
+
+
 
 
 class Cart(models.Model):
@@ -61,3 +72,5 @@ class CartItem(models.Model):
     @property
     def total_price(self):
         return self.product.price * self.quantity
+    
+    
