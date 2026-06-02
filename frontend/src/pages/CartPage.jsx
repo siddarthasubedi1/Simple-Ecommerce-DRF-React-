@@ -52,7 +52,6 @@ const CartPage = () => {
                                         className="overflow-hidden rounded-lg border border-slate-200 bg-white"
                                     >
 
-
                                         <div className="grid gap-4 p-4 sm:grid-cols-[96px_minmax(0,1fr)] sm:items-center sm:p-5">
 
 
@@ -126,9 +125,18 @@ const CartPage = () => {
                                     <p className="text-sm text-slate-500">Subtotal</p>
                                     <p className="text-2xl font-semibold text-slate-900">Rs.{formatPrice(total)}</p>
                                 </div>
-                                <button className="inline-flex items-center justify-center rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-700">
+                                {/* <button className="inline-flex items-center justify-center rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-700">
                                     Proceed to Checkout
-                                </button>
+                                </button> */}
+
+                                <Link
+                                    to="/checkout"
+                                    className="inline-flex items-center justify-center rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-700"
+                                >
+                                    Proceed to Checkout
+                                </Link>
+
+
                             </div>
                         </div>
                     </div>

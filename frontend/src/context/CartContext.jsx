@@ -87,8 +87,24 @@ export const CartProvider = ({ children }) => {
         }
     }
 
+    const clearCart = async () => {
+        // try {
+        //     await fetch(`${BACKEND_URL}/api/cart/clear`, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //     })
+        //     await fetchCartItems() // Refresh cart items after clearing
+        // } catch (error) {
+        //     console.error('Error clearing cart:', error)
+        // }
+        setCartItems([])
+        setTotal(0)
+    }
+
     return (
-        <CartContext.Provider value={{ cartItems, total, addToCart, removeFromCart, updateQuantity }}>
+        <CartContext.Provider value={{ cartItems, total, addToCart, removeFromCart, updateQuantity, clearCart }}>
             {children}
         </CartContext.Provider>
     )
